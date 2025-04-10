@@ -2,6 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
+type CustomError = {
+  errCode: number;
+};
+
 interface UseFetchOptions extends RequestInit {
   method?: RequestMethod;
   headers?: HeadersInit;
@@ -12,16 +16,20 @@ interface UseFetchOptions extends RequestInit {
 interface UseFetchResult<T> {
   data: T | null;
   loading: boolean;
-  error: Error | null;
+  error: Error | CustomError | null;
   execute: (body?: BodyInit | null) => Promise<void>;
   abort: () => void;
+}
+
+export function isServerError(err: Error | CustomError | null): err is { errCode: number } {
+  return !!err && 'errCode' in err && err?.errCode === 500;
 }
 
 const useFetch = <T = unknown>(url: string, options: UseFetchOptions = {}): UseFetchResult<T> => {
   const { immediate = true, ...fetchOptions } = options;
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<Error | CustomError | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const execute = async (body?: BodyInit | null) => {
