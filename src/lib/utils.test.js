@@ -10,7 +10,9 @@ describe('cn Function Test', () => {
   it('Test for judgement', () => {
     const isActive = true;
     const isDisabled = false;
-    expect(cn('base', { 'text-blue-500': isActive, 'text-gray-500': isDisabled })).toBe('base text-blue-500');
+    expect(cn('base', { 'text-blue-500': isActive, 'text-gray-500': isDisabled })).toBe(
+      'base text-blue-500',
+    );
   });
 
   it('Test for merge', () => {

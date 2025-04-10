@@ -1,15 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { parseGeoJSON } from './geo'
+import { parseGeoJSON } from './geo';
 
 describe('parseGeoJSON Function Test', () => {
   it('Basic test', () => {
     const input = [
       [100.123, 50.123],
-      [123.456, 10.234]
+      [123.456, 10.234],
     ];
     const expected = [
       [50.123, 100.123],
-      [10.234, 123.456]
+      [10.234, 123.456],
     ];
     expect(parseGeoJSON(input)).toEqual(expected);
   });
@@ -30,11 +30,11 @@ describe('parseGeoJSON Function Test', () => {
     expect(result[0][1]).toBe(-50.123);
   });
 
-   // 验证原数组未被修改
+  // 验证原数组未被修改
   it('Test: no modify for old', () => {
     const original = [
       [100.123, 50.123],
-      [123.456, 10.234]
+      [123.456, 10.234],
     ];
     const copy = [...original];
     parseGeoJSON(original);
@@ -44,11 +44,11 @@ describe('parseGeoJSON Function Test', () => {
   it('Test negative number', () => {
     const input = [
       [-50.123, 10.234],
-      [-50.321, 99.876]
+      [-50.321, 99.876],
     ];
     const expected = [
       [10.234, -50.123],
-      [99.876, -50.321]
+      [99.876, -50.321],
     ];
     expect(parseGeoJSON(input)).toEqual(expected);
   });
