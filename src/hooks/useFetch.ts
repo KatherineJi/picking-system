@@ -59,8 +59,9 @@ const useFetch = <T = unknown>(url: string, options: UseFetchOptions = {}): UseF
 
       const jsonData = (await response.json()) as T;
       setData(jsonData);
-    } catch (err) {
-      if (err.name !== 'AbortError') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err?.name !== 'AbortError') {
         setError(err);
       }
     } finally {
