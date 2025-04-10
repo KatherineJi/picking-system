@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import type { LngLatLike, Marker } from 'mapbox-gl';
 
@@ -23,7 +23,6 @@ const MapPanel = () => {
 
   useEffect(() => {
     if (!mapRef.current) {
-      // TODO 重渲染时候不初始化地图
       mapRef.current = new mapboxgl.Map({
         accessToken: MAPBOX_TOKEN,
         container: mapContainerRef.current || 'map',
@@ -133,7 +132,7 @@ const MapPanel = () => {
         type: 'Feature',
         properties: {},
         geometry: {
-          coordinates: routePath,
+          coordinates: routePath as [number, number][],
           type: 'LineString',
         },
       },
@@ -169,14 +168,14 @@ const MapPanel = () => {
     map.fitBounds(bounds, { padding: 50 });
   };
 
-  const clearRoute = () => {
+  const clearRoute = useCallback(() => {
     const map: mapboxgl.Map = mapRef.current!;
     if (map.getSource('route')) {
       map.removeLayer('route');
       map.removeSource('route');
     }
     markers.forEach((marker) => marker.remove());
-  };
+  }, [mapRef.current, markers]);
 
   return <div id='map' ref={mapContainerRef} className='map=panel w-screen h-screen'></div>;
 };
