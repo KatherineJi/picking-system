@@ -45,12 +45,12 @@ describe('SearchWrapper Test', () => {
     render(<SearchWrapper {...propsWithErrors} />);
 
     expect(screen.getByText(ERR_TEXT.EMPTY)).toBeInTheDocument();
-    expect(screen.getAllByText(/Can\'t be empty/)).toHaveLength(1);
+    expect(screen.getAllByText(/Can't be empty/)).toHaveLength(1);
   });
 
   it('Test no show err', () => {
     render(<SearchWrapper {...mockProps} />);
 
-    expect(screen.queryByText(/Can\'t be empty/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Can't be empty/)).not.toBeInTheDocument();
   });
 });
