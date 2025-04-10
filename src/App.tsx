@@ -1,15 +1,12 @@
-import { BrowserRouter, Routes, Route } from 'react-router';
-import HomePage from './pages/Home';
-import NotFoundPage from './pages/NotFound';
+import SearchPanel from '@/components/SearchPanel';
+import MapPanel from '@/components/MapPanel';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<HomePage />} />
-        <Route path='*' element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+    <div className='home-page flex bg-stone-200 h-screen'>
+      <SearchPanel />
+      <MapPanel />
+    </div>
   );
 };
 
