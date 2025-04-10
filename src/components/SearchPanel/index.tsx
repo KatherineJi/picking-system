@@ -14,16 +14,17 @@ const SearchPanel = () => {
   const {
     search: { origin, destination },
     geoToken,
+    geoData,
+    errMsg,
     setSearchError,
     resetSearch,
     setGeoToken,
-    geoData,
     setGeoData,
     resetGeoData,
+    setErrMsg,
   } = useStore();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [serverErrMsg, setServerErrMsg] = useState('');
 
   const {
     data: resToken,
@@ -93,9 +94,9 @@ const SearchPanel = () => {
 
     // server error
     if (isServerError(errToken) || isServerError(errData)) {
-      setServerErrMsg(ERR_TEXT.SERVER_ERR);
+      setErrMsg(ERR_TEXT.SERVER_ERR);
     } else {
-      setServerErrMsg(ERR_TEXT.OTHER_ERR);
+      setErrMsg(ERR_TEXT.OTHER_ERR);
     }
   }, [errToken, errData]);
 
@@ -104,10 +105,9 @@ const SearchPanel = () => {
 
     setIsSubmitting(false);
 
-    console.log('resData', resData);
     if (resData.status !== 'success') {
       if (resData.status === 'in progress') {
-        // 重试三次
+        // retry 3 times
         if (geoToken.retry) {
           setIsSubmitting(true);
           setGeoToken({
@@ -115,10 +115,10 @@ const SearchPanel = () => {
             retry: geoToken.retry - 1,
           });
         } else {
-          setServerErrMsg(ERR_TEXT.SERVER_BUSY);
+          setErrMsg(ERR_TEXT.SERVER_BUSY);
         }
       } else if (resData.status === 'failure') {
-        setServerErrMsg(resData.error || ERR_TEXT.SERVER_ERR);
+        setErrMsg(resData.error || ERR_TEXT.SERVER_ERR);
       }
 
       return;
@@ -129,14 +129,14 @@ const SearchPanel = () => {
       total_distance: resData.total_distance,
       total_time: resData.total_time,
     });
-    setServerErrMsg('');
+    errMsg && setErrMsg('');
   }, [resData]);
 
   // Reset value and result
   const onReset = (onlyResult: boolean = false) => {
-    if (!onlyResult) resetSearch();
+    !onlyResult && resetSearch();
     resetGeoData();
-    setServerErrMsg('');
+    errMsg && setErrMsg('');
   };
 
   return (
@@ -165,7 +165,7 @@ const SearchPanel = () => {
             </div>
           </div>
         ) : null}
-        {serverErrMsg && <div className='text-red-500'>{serverErrMsg}</div>}
+        {errMsg && <div className='text-red-500'>{errMsg}</div>}
       </div>
 
       <div className='button-wrapper flex justify-center'>

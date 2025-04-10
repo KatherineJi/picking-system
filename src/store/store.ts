@@ -27,6 +27,7 @@ interface StoreState {
     retry: number;
   };
   geoData: GeoData | null;
+  errMsg: string;
   setSearch: (
     key: keyof StoreState['search'],
     obj: {
@@ -42,6 +43,7 @@ interface StoreState {
   }) => void;
   setGeoData: (data: GeoData) => void;
   resetGeoData: () => void;
+  setErrMsg: (msg: string) => void;
 }
 
 const DEFAULT_SEARCH = {
@@ -56,7 +58,7 @@ const DEFAULT_SEARCH = {
 };
 
 const useStore = create<StoreState>((set) => ({
-  // 初始状态
+  // initial state
   search: DEFAULT_SEARCH,
   geoToken: {
     token: '',
@@ -64,7 +66,9 @@ const useStore = create<StoreState>((set) => ({
     retry: RETRY_TIMES,
   },
   geoData: null,
-  // 修改状态的方法
+  errMsg: '',
+
+  // state modify
   setSearch: (key, obj) => {
     set((state) => ({ search: { ...state.search, [key]: obj } }));
   },
@@ -104,6 +108,9 @@ const useStore = create<StoreState>((set) => ({
   },
   resetGeoData: () => {
     set(() => ({ geoData: null }));
+  },
+  setErrMsg: (msg) => {
+    set(() => ({ errMsg: msg }));
   },
 }));
 
