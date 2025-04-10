@@ -142,18 +142,8 @@ const SearchPanel = () => {
   return (
     <div className='search-panel w-full h-auto z-100 absolute flex md:w-96 md:h-screen'>
       <div className='bg-white m-2 w-full rounded-sm p-4 flex flex-col gap-8'>
-        <SearchWrapper
-          searchKey={'origin'}
-          labelText={SEARCH_TEXT.ORIGIN}
-          value={origin.value}
-          errorList={origin.error}
-        />
-        <SearchWrapper
-          searchKey={'destination'}
-          labelText={SEARCH_TEXT.DESTINATION}
-          value={destination.value}
-          errorList={destination.error}
-        />
+        <SearchWrapper searchKey={'origin'} labelText={SEARCH_TEXT.ORIGIN} />
+        <SearchWrapper searchKey={'destination'} labelText={SEARCH_TEXT.DESTINATION} />
 
         <div className='tips-wrapper w-full h-12 flex flex-col justify-end md:h-48'>
           {geoData ? (

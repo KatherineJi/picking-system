@@ -20,7 +20,7 @@ type SearchResult = {
   label: string;
 };
 
-export function SearchInput({
+const SearchInput = ({
   value,
   onChange,
   placeholder,
@@ -30,7 +30,7 @@ export function SearchInput({
   onChange: (v: string) => void;
   placeholder?: string;
   emptyText?: string;
-}) {
+}) => {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -126,4 +126,6 @@ export function SearchInput({
       />
     </>
   );
-}
+};
+
+export default SearchInput;
