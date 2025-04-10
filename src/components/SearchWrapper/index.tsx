@@ -1,10 +1,9 @@
-import { ChangeEvent } from 'react';
 import { X } from 'lucide-react';
 
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import useStore from '@/store/store';
 import { SEARCH_TEXT } from '@/constants/text';
+import { SearchInput } from '../SearchInput';
 
 type Props = {
   searchKey: 'origin' | 'destination';
@@ -18,8 +17,8 @@ const SearchWrapper = (props: Props) => {
 
   const { setSearchValue } = useStore();
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(searchKey, e.target.value);
+  const onChange = (v: string) => {
+    setSearchValue(searchKey, v);
   };
 
   const onClear = () => {
@@ -31,7 +30,14 @@ const SearchWrapper = (props: Props) => {
       <div className='flex flex-col gap-4'>
         <Label>{labelText}</Label>
         <div className='flex relative'>
-          <Input placeholder={SEARCH_TEXT.PLACEHOLDER} value={value} onChange={onChange} />
+          <SearchInput
+            value={value}
+            onChange={onChange}
+            placeholder={SEARCH_TEXT.PLACEHOLDER}
+            emptyText={SEARCH_TEXT.EMPTY}
+          />
+          {/* Original Version */}
+          {/* <Input placeholder={SEARCH_TEXT.PLACEHOLDER} value={value} onChange={onChange} /> */}
           {value && (
             <X
               className='absolute right-3 top-0 bottom-0 m-auto cursor-pointer'

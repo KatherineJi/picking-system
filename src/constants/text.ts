@@ -2,6 +2,8 @@ export const SEARCH_TEXT = {
   ORIGIN: 'Starting Location',
   DESTINATION: 'Drop-off Point',
   PLACEHOLDER: 'Please input the location',
+  EMPTY: 'No matches',
+  LOADING: 'Loading',
 };
 
 export const BTN_TEXT = {
