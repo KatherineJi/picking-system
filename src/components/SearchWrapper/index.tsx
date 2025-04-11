@@ -1,21 +1,20 @@
+import React from 'react';
 import { X } from 'lucide-react';
 
 import { Label } from '@/components/ui/label';
-import useStore from '@/store/store';
+import useStore, { setSearchValue } from '@/store/store';
 import { SEARCH_TEXT } from '@/constants/text';
-import { SearchInput } from '../SearchInput';
+import SearchInput from '../SearchInput';
 
 type Props = {
   searchKey: 'origin' | 'destination';
   labelText: string;
-  value: string;
-  errorList: string[];
 };
 
-const SearchWrapper = (props: Props) => {
-  const { searchKey, labelText, value, errorList } = props;
+const SearchWrapper = React.memo((props: Props) => {
+  const { searchKey, labelText } = props;
 
-  const { setSearchValue } = useStore();
+  const { value, error } = useStore.use.search()[searchKey];
 
   const onChange = (v: string) => {
     setSearchValue(searchKey, v);
@@ -45,12 +44,12 @@ const SearchWrapper = (props: Props) => {
             />
           )}
         </div>
-        {errorList.map((err) => (
+        {error.map((err) => (
           <div className='text-red-500'>{err}</div>
         ))}
       </div>
     </>
   );
-};
+});
 
 export default SearchWrapper;

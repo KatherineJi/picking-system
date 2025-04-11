@@ -20,7 +20,7 @@ type SearchResult = {
   label: string;
 };
 
-export function SearchInput({
+const SearchInput = ({
   value,
   onChange,
   placeholder,
@@ -30,13 +30,12 @@ export function SearchInput({
   onChange: (v: string) => void;
   placeholder?: string;
   emptyText?: string;
-}) {
+}) => {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchResults = useCallback(async (query: string) => {
-    // 实际项目中替换为真实API调用
     const placeList = await fetch(
       `${getSearchPlacesUrl}/${query}.json?access_token=${MAPBOX_TOKEN}`,
     ).then((res) => res.json());
@@ -126,4 +125,6 @@ export function SearchInput({
       />
     </>
   );
-}
+};
+
+export default SearchInput;

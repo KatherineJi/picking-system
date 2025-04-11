@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import type { LngLatLike, Marker } from 'mapbox-gl';
 
-import useStore from '@/store/store';
+import useStore, { setErrMsg } from '@/store/store';
 import { ERR_TEXT } from '@/constants/text';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -13,7 +13,7 @@ const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 const DEFAULT_LOCATION: LngLatLike = [114.15, 22.3]; // HONGKONG
 
 const MapPanel = () => {
-  const { geoData, setErrMsg } = useStore();
+  const geoData = useStore.use.geoData();
 
   const [routePath, setRoutePath] = useState<LngLatLike[] | null>(null);
   const [markers, setMarkers] = useState<Marker[]>([]);
@@ -37,7 +37,7 @@ const MapPanel = () => {
     };
   }, []);
 
-  // 模拟获取路线数据
+  // fetch routes from mapbox
   useEffect(() => {
     if (!geoData) {
       clearRoute();
@@ -78,7 +78,6 @@ const MapPanel = () => {
     );
   }, [geoData]);
 
-  // 初始化地图
   useEffect(() => {
     if (!routePath) return;
 
@@ -119,11 +118,11 @@ const MapPanel = () => {
     return new mapboxgl.Marker(markerEl).setLngLat(position).addTo(mapRef.current!);
   };
 
-  // 绘制路线
+  // draw route path
   const drawRoute = () => {
     const map: mapboxgl.Map = mapRef.current!;
 
-    // 先清理
+    // clear route path first
     clearRoute();
 
     map.addSource('route', {

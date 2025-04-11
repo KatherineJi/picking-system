@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 import type { LngLatLike } from 'mapbox-gl';
+import createSelectors from './createSelectors';
 
 export const RETRY_TIMES = 3;
 
@@ -10,7 +11,7 @@ type GeoData = {
   total_time: number;
 };
 
-interface StoreState {
+export interface StoreState {
   search: {
     origin: {
       value: string;
@@ -28,22 +29,6 @@ interface StoreState {
   };
   geoData: GeoData | null;
   errMsg: string;
-  setSearch: (
-    key: keyof StoreState['search'],
-    obj: {
-      value: string;
-      error: string[];
-    },
-  ) => void;
-  setSearchValue: (key: keyof StoreState['search'], v: string) => void;
-  setSearchError: (key: keyof StoreState['search'], err: string[]) => void;
-  resetSearch: () => void;
-  setGeoToken: <K extends keyof StoreState['geoToken']>(newToken: {
-    [P in K]: StoreState['geoToken'][P];
-  }) => void;
-  setGeoData: (data: GeoData) => void;
-  resetGeoData: () => void;
-  setErrMsg: (msg: string) => void;
 }
 
 const DEFAULT_SEARCH = {
@@ -57,8 +42,7 @@ const DEFAULT_SEARCH = {
   },
 };
 
-const useStore = create<StoreState>((set) => ({
-  // initial state
+const useStore = create<StoreState>(() => ({
   search: DEFAULT_SEARCH,
   geoToken: {
     token: '',
@@ -67,51 +51,41 @@ const useStore = create<StoreState>((set) => ({
   },
   geoData: null,
   errMsg: '',
-
-  // state modify
-  setSearch: (key, obj) => {
-    set((state) => ({ search: { ...state.search, [key]: obj } }));
-  },
-  setSearchValue: (key, value) => {
-    set((state) => ({
-      search: {
-        ...state.search,
-        [key]: {
-          ...state.search[key],
-          value,
-          error: [],
-        },
-      },
-    }));
-  },
-  setSearchError: (key, error) => {
-    set((state) => ({
-      search: {
-        ...state.search,
-        [key]: {
-          ...state.search[key],
-          error,
-        },
-      },
-    }));
-  },
-  resetSearch: () => {
-    set(() => ({
-      search: DEFAULT_SEARCH,
-    }));
-  },
-  setGeoToken: (newToken) => {
-    set((state) => ({ geoToken: { ...state.geoToken, ...newToken } }));
-  },
-  setGeoData: (data) => {
-    set(() => ({ geoData: data }));
-  },
-  resetGeoData: () => {
-    set(() => ({ geoData: null }));
-  },
-  setErrMsg: (msg) => {
-    set(() => ({ errMsg: msg }));
-  },
 }));
 
-export default useStore;
+export const setSearchValue = (key: keyof StoreState['search'], value: string) => {
+  useStore.setState((state) => ({
+    search: {
+      ...state.search,
+      [key]: {
+        ...state.search[key],
+        value,
+        error: [],
+      },
+    },
+  }));
+};
+
+export const resetSearch = () => {
+  useStore.setState(() => ({ search: DEFAULT_SEARCH }));
+};
+
+export const setGeoToken = <K extends keyof StoreState['geoToken']>(newToken: {
+  [P in K]: StoreState['geoToken'][P];
+}) => {
+  useStore.setState((state) => ({ geoToken: { ...state.geoToken, ...newToken } }));
+};
+
+export const setGeoData = (data: GeoData) => {
+  useStore.setState(() => ({ geoData: data }));
+};
+
+export const resetGeoData = () => {
+  useStore.setState(() => ({ geoData: null }));
+};
+
+export const setErrMsg = (msg: string) => {
+  useStore.setState(() => ({ errMsg: msg }));
+};
+
+export default createSelectors(useStore);

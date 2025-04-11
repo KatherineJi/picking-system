@@ -30,7 +30,7 @@ describe('parseGeoJSON Function Test', () => {
     expect(result[0][1]).toBe(-50.123);
   });
 
-  // 验证原数组未被修改
+  // check origin array not modified
   it('Test: no modify for old', () => {
     const original = [
       [100.123, 50.123],
@@ -56,7 +56,7 @@ describe('parseGeoJSON Function Test', () => {
   it('Test: return valid as LngLatLike', () => {
     const input = [[10.234, 99.876]];
     const result = parseGeoJSON(input);
-    // 验证类型结构
+    // check type structure
     expect(result[0]).toHaveLength(2);
     expect(typeof result[0][0]).toBe('number');
     expect(typeof result[0][1]).toBe('number');
