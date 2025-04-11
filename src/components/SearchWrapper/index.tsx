@@ -2,7 +2,7 @@ import React from 'react';
 import { X } from 'lucide-react';
 
 import { Label } from '@/components/ui/label';
-import useStore from '@/store/store';
+import useStore, { setSearchValue } from '@/store/store';
 import { SEARCH_TEXT } from '@/constants/text';
 import SearchInput from '../SearchInput';
 
@@ -14,7 +14,6 @@ type Props = {
 const SearchWrapper = React.memo((props: Props) => {
   const { searchKey, labelText } = props;
 
-  const { setSearchValue } = useStore();
   const { value, error } = useStore((state) => state.search[searchKey]);
 
   const onChange = (v: string) => {

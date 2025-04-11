@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import type { LngLatLike, Marker } from 'mapbox-gl';
 
-import useStore from '@/store/store';
+import useStore, { setErrMsg } from '@/store/store';
 import { ERR_TEXT } from '@/constants/text';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -13,7 +13,7 @@ const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 const DEFAULT_LOCATION: LngLatLike = [114.15, 22.3]; // HONGKONG
 
 const MapPanel = () => {
-  const { geoData, setErrMsg } = useStore();
+  const { geoData } = useStore();
 
   const [routePath, setRoutePath] = useState<LngLatLike[] | null>(null);
   const [markers, setMarkers] = useState<Marker[]>([]);

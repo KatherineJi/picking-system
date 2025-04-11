@@ -36,7 +36,6 @@ const SearchInput = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchResults = useCallback(async (query: string) => {
-    // 实际项目中替换为真实API调用
     const placeList = await fetch(
       `${getSearchPlacesUrl}/${query}.json?access_token=${MAPBOX_TOKEN}`,
     ).then((res) => res.json());
