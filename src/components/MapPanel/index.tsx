@@ -13,7 +13,7 @@ const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 const DEFAULT_LOCATION: LngLatLike = [114.15, 22.3]; // HONGKONG
 
 const MapPanel = () => {
-  const { geoData } = useStore();
+  const geoData = useStore.use.geoData();
 
   const [routePath, setRoutePath] = useState<LngLatLike[] | null>(null);
   const [markers, setMarkers] = useState<Marker[]>([]);

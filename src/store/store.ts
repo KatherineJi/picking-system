@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 import type { LngLatLike } from 'mapbox-gl';
+import createSelectors from './createSelectors';
 
 export const RETRY_TIMES = 3;
 
@@ -87,4 +88,4 @@ export const setErrMsg = (msg: string) => {
   useStore.setState(() => ({ errMsg: msg }));
 };
 
-export default useStore;
+export default createSelectors(useStore);

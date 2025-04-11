@@ -14,7 +14,7 @@ type Props = {
 const SearchWrapper = React.memo((props: Props) => {
   const { searchKey, labelText } = props;
 
-  const { value, error } = useStore((state) => state.search[searchKey]);
+  const { value, error } = useStore.use.search()[searchKey];
 
   const onChange = (v: string) => {
     setSearchValue(searchKey, v);

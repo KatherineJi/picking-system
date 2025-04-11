@@ -46,11 +46,9 @@ const checkIsInvalid = () => {
 };
 
 const BtnWrapper = () => {
-  const {
-    search: { origin, destination },
-    geoToken,
-    errMsg,
-  } = useStore();
+  const { origin, destination } = useStore.use.search();
+  const geoToken = useStore.use.geoToken();
+  const errMsg = useStore.use.errMsg();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
